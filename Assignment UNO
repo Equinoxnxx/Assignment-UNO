@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Your website description" />
+    <meta name="keywords" content="Your website keywords" />
+    <meta name="author" content="Your name or company name" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:title" content="Your website title" />
+    <meta property="og:description" content="Your website description" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="Your website URL" />
+    <meta property="og:image" content="Your website image URL" />
+    <title>Assignment UNO - LukaT</title>
+    <button class="hamburger-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <style>
+      body {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+      }
+      .hamburger-menu {
+        display: block;
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        padding: 0;
+        width: 30px;
+        height: 24px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+      }
+
+      .hamburger-menu span {
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: white;
+        border-radius: 2px;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .hamburger-menu span:nth-child(1) {
+        top: 0;
+      }
+
+      .hamburger-menu span:nth-child(2) {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .hamburger-menu span:nth-child(3) {
+        bottom: 0;
+      }
+
+      .hamburger-menu.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      .hamburger-menu.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger-menu.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      .hoverable {
+        display: inline-block;
+        backface-visibility: hidden;
+        vertical-align: middle;
+        position: relative;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        transform: translateZ(0);
+        transition-duration: 0.3s;
+        transition-property: transform;
+      }
+      .hoverable:before {
+        position: absolute;
+        pointer-events: none;
+        z-index: -1;
+        content: "";
+        top: 100%;
+        left: 5%;
+        height: 10px;
+        width: 90%;
+        opacity: 0;
+        background: -webkit-radial-gradient(
+          center,
+          ellipse,
+          rgba(255, 255, 255, 0.35) 0%,
+          rgba(255, 255, 255, 0) 80%
+        );
+        background: radial-gradient(
+          ellipse at center,
+          rgba(255, 255, 255, 0.35) 0%,
+          rgba(255, 255, 255, 0) 80%
+        );
+        /* W3C */
+        transition-duration: 0.3s;
+        transition-property: transform, opacity;
+      }
+      .hoverable:hover,
+      .hoverable:active,
+      .hoverable:focus {
+        transform: translateY(-5px);
+      }
+      .hoverable:hover:before,
+      .hoverable:active:before,
+      .hoverable:focus:before {
+        opacity: 1;
+        transform: translateY(-5px);
+      }
+      @keyframes bounce-animation {
+        16.65% {
+          -webkit-transform: translateY(8px);
+          transform: translateY(8px);
+        }
+        33.3% {
+          -webkit-transform: translateY(-6px);
+          transform: translateY(-6px);
+        }
+        49.95% {
+          -webkit-transform: translateY(4px);
+          transform: translateY(4px);
+        }
+        66.6% {
+          -webkit-transform: translateY(-2px);
+          transform: translateY(-2px);
+        }
+        83.25% {
+          -webkit-transform: translateY(1px);
+          transform: translateY(1px);
+        }
+        100% {
+          -webkit-transform: translateY(0);
+          transform: translateY(0);
+        }
+      }
+      .bounce {
+        animation-name: bounce-animation;
+        animation-duration: 2s;
+      }
+      .cat {
+        width: 250px;
+        height: 250px;
+        margin: 10px;
+        padding: 10px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .cat img {
+        width: 100%;
+        height: 70%;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .cat h3 {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 10px;
+      }
+
+      .cat p {
+        font-size: 16px;
+        color: #666;
+        margin-top: 5px;
+        line-height: 1.5;
+        height: 30%;
+        overflow: hidden;
+        padding: 5px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .modal-content {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .modal-content img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      .modal-content h3 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .modal-content p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+      /*Set up*/
+      @media (min-width: 768px) {
+        .navbar {
+          text-align: center !important;
+          float: none;
+          display: inline-block;
+        }
+      }
+      body {
+        background-color: rgba(0, 0, 0, 1);
+        font-weight: 600;
+        text-align: center !important;
+        color: white;
+      }
+      nav {
+        background: none !important;
+        text-transform: uppercase;
+        display: flex;
+        flex-direction: row-reverse;
+      }
+      nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      nav ul li {
+        display: inline-block;
+        margin-left: 3em;
+        margin-right: 3em;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+      }
+      nav li {
+        list-style-type: none;
+      }
+      nav li a {
+        transition: 0.5s color ease-in-out;
+      }
+      .page-title {
+        opacity: 0.75;
+      }
+      /*Base styles*/
+      body {
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+      }
+
+      /*320px*/
+      @media screen and (max-width: 320px) {
+        body {
+          font-size: 14px;
+        }
+        /*additional styles for smaller screens go here*/
+      }
+
+      /*321px+*/
+      @media screen and (min-width: 321px) {
+        body {
+          font-size: 18px;
+        }
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(function () {
+        var str = "#len"; //1 up to 1-n elements
+        $(document).ready(function () {
+          var i, stop;
+          i = 1;
+          stop = 4; //num elements
+          setInterval(function () {
+            if (i > stop) {
+              return;
+            }
+            $(str + i).addClass("bounce");
+            setTimeout(function () {
+              $(str + i).removeClass("bounce");
+            }, 2000);
+            i++;
+          }, 1000);
+        });
+      });
+      const Btn = document.getElementById("len2");
+
+      Btn.addEventListener("click", () => {
+        fetch("https://fakerapi.it/api/v1/texts?_quantity=1")
+          .then((response) => response.text())
+          .then((data) => {
+            const txt = data.data[0].text;
+            alert(txt);
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("Failed to fetch text. Please try again.");
+          });
+      });
+      function toggleNav() {
+        var navBar = document.querySelector(".nav");
+        if (navBar.style.display === "block") {
+          navBar.style.display = "none";
+        } else {
+          navBar.style.display = "block";
+        }
+      }
+      var toggleBtn = document.querySelector(".hamburger-menu");
+      toggleBtn.onclick = toggleNav();
+      var modal = document.getElementById("modal1");
+      function openModal() {
+  modal.style.display = "block";
+}
+function closeModal() {
+  modal.style.display = "none";
+}
+var closeButton = modal.querySelector(".close");
+closeButton.addEventListener("click", closeModal);
+var catImages = document.querySelectorAll(".cat img");
+catImages.forEach(function(catImage) {
+  catImage.addEventListener("click", function() {
+    modal = document.getElementById("modal" + catImage.parentElement.id.slice(3));
+    openModal();
+  });
+});
+
+    </script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav">
+            <li><a id="len1" class="hoverable" href="#">Home</a></li>
+            <li>
+              <a
+                id="len2"
+                class="hoverable"
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                >Surprise</a
+              >
+            </li>
+            <li>
+              <a id="len3" class="hoverable" href="">API</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div id="what-the-hell-is-this">
+        <div class="page-title">
+          <h2>Assignment UNO</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="modal1">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<img src="https://d.newsweek.com/en/full/1780418/ragdoll-cat.jpg">
+			<h3>Fluffy</h3>
+			<p>Fluffy is a beautiful white Persian cat with bright blue eyes. She loves playing with balls of yarn and cuddling up in laps.</p>
+		</div>
+	</div>
+</div>
+<div class="cat" id="cat2">
+	<img src="https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_1280.jpg">
+	<h3>Simba</h3>
+	<p>Simba is a ginger tabby cat with a mischievous personality. He enjoys climbing trees and catching mice.</p>
+	<div class="modal" id="modal2">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<img src="https://cdn.pixabay.com/photo/2018/02/25/17/51/cat-3182259_1280.jpg">
+			<h3>Simba</h3>
+			<p>Simba is a ginger tabby cat with a mischievous personality. He enjoys climbing trees and catching mice.</p>
+		</div>
+	</div>
+</div>
+<div class="cat" id="cat3">
+	<img src="https://d.newsweek.com/en/full/1780418/ragdoll-cat.jpg">
+	<h3>Whiskers</h3>
+	<p>Whiskers is a black and white tuxedo cat who loves to explore her surroundings. She is also a big fan of napping in sunbeams.</p>
+	<div class="modal" id="modal3">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Mittens_the_cat_of_wellington.jpg">
+			<h3>Whiskers</h3>
+			<p>Whiskers is a black and white tuxedo cat who loves to explore her surroundings. She is also a big fan of napping in sunbeams.</p>
+		</div>
+	</div>
+</div>
+<div class="cat" id="cat4">
+	<img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Mittens_the_cat_of_wellington.jpg">
+	<h3>Mittens</h3>
+	<p>Mittens is a fluffy grey and white cat with big green eyes. She enjoys playing with toy mice and getting lots of attention from her human.</p>
+	<div class="modal" id="modal4">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<img src="https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_1280.jpg">
+			<h3>Mittens</h3>
+			<p>Mittens is a fluffy grey and white cat with big green eyes. She enjoys playing with toy mice and getting lots of attention from her human.</p>
+		</div>
+	</div>
+</div>
+    <h1>Welcome to my responsive website!</h1>
+    <p>This is some example text.</p>
+    <div class="mapouter">
+      <div class="gmap_canvas">
+        <iframe
+          class="gmap_iframe"
+          width="100%"
+          frameborder="0"
+          scrolling="no"
+          marginheight="0"
+          marginwidth="0"
+          src="https://maps.google.com/maps?width=320&amp;height=320&amp;hl=en&amp;q=Unilab&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+        ></iframe>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h4>About Us</h4>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+              placerat, lorem id aliquet sollicitudin, nibh mi malesuada neque,
+              ac suscipit quam dolor vel elit.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h4>Contact Moi</h4>
+            <ul>
+              <li><i class="fa fa-map-marker"></i>Number</li>
+              <li><i class="fa fa-phone"></i>Mail</li>
+              <li><i class="fa fa-envelope"></i>Address</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <hr />
+            <p class="text-muted">
+              &copy; 2023 Assignment UNO. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
